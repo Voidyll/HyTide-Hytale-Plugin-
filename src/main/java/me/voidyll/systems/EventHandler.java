@@ -27,6 +27,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import com.google.gson.JsonSyntaxException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +41,7 @@ import java.util.Set;
  * Events are loaded from JSON configuration and can be triggered manually or by game events.
  */
 public class EventHandler {
+    private static final long EVENTS_CONFIG_CHECK_INTERVAL_MS = 1000L;
     
     private final Path configFilePath;
     private final Path trackedChangesFilePath;
@@ -63,6 +65,8 @@ public class EventHandler {
     private Map<String, String> trackedBlockChanges = new HashMap<>();
     
     private long lastTickTime = System.currentTimeMillis();
+    private volatile long eventsConfigLastModifiedMs = -1L;
+    private volatile long lastEventsConfigCheckMs = 0L;
     
     public EventHandler(Path pluginDataDirectory, SpawnDirectorSystem spawnDirector) {
         this.configFilePath = pluginDataDirectory.resolve("events.json");
@@ -71,6 +75,7 @@ public class EventHandler {
         this.spawnDirector = spawnDirector;
         
         loadOrCreateEvents();
+        eventsConfigLastModifiedMs = getEventsConfigLastModifiedMs();
         loadTrackedChanges();
     }
     
@@ -88,6 +93,7 @@ public class EventHandler {
      * @return true if event was started successfully
      */
     public boolean startEvent(String eventId) {
+        refreshEventsFromDiskIfChanged();
         Event event = events.get(eventId);
         if (event == null) {
             return false;
@@ -172,6 +178,7 @@ public class EventHandler {
      * Get all available events.
      */
     public Map<String, Event> getAllEvents() {
+        refreshEventsFromDiskIfChanged();
         return new HashMap<>(events);
     }
 
@@ -184,6 +191,7 @@ public class EventHandler {
      * @return Set of "x,y,z" strings
      */
     public Set<String> getRegisteredTriggerCoordKeys() {
+        refreshEventsFromDiskIfChanged();
         return new HashSet<>(coordKeyToEventId.keySet());
     }
 
@@ -191,6 +199,7 @@ public class EventHandler {
      * Check if a coordinate is registered as a trigger for any event.
      */
     public boolean isTriggerCoordinate(int x, int y, int z) {
+        refreshEventsFromDiskIfChanged();
         return coordKeyToEventId.containsKey(x + "," + y + "," + z);
     }
     
@@ -198,6 +207,7 @@ public class EventHandler {
      * Check if an event has been started at least once.
      */
     public boolean hasEventBeenStarted(String eventId) {
+        refreshEventsFromDiskIfChanged();
         return eventStartedStatus.getOrDefault(eventId, false);
     }
     
@@ -387,6 +397,7 @@ public class EventHandler {
      * Can start events based on trigger coordinates, or notify the current event.
      */
     public void handleBlockInteraction(int x, int y, int z, String blockType) {
+        refreshEventsFromDiskIfChanged();
         String coordKey = x + "," + y + "," + z;
         
         // Check if this coordinate triggers an event (one-time per session)
@@ -465,6 +476,7 @@ public class EventHandler {
         } else {
             loadEventsConfig();
         }
+        eventsConfigLastModifiedMs = getEventsConfigLastModifiedMs();
     }
     
     private void createDefaultEventsConfig() {
@@ -529,9 +541,11 @@ public class EventHandler {
             }
             
             loadEventsFromConfigs(configs);
-        } catch (IOException e) {
+        } catch (IOException | JsonSyntaxException e) {
             System.err.println("Error loading events.json: " + e.getMessage());
-            createDefaultEventsConfig();
+            if (events.isEmpty()) {
+                createDefaultEventsConfig();
+            }
         }
     }
     
@@ -543,6 +557,9 @@ public class EventHandler {
         triggeredCoordKeys.clear();
         
         for (EventConfig config : configs) {
+            if (config == null || config.getEventId() == null || config.getEventId().isEmpty()) {
+                continue;
+            }
             config.parseEndConditionType();
             
             // Create event instance (use DefaultEvent for now, can be extended later)
@@ -553,6 +570,9 @@ public class EventHandler {
             
             // Register coordinate triggers if specified
             List<int[]> triggerCoords = config.getTriggerBlockCoordinates();
+            if (triggerCoords == null) {
+                continue;
+            }
             for (int[] coord : triggerCoords) {
                 if (coord == null || coord.length < 3) {
                     continue;
@@ -579,6 +599,7 @@ public class EventHandler {
             try (FileWriter writer = new FileWriter(file)) {
                 gson.toJson(configs, writer);
             }
+            eventsConfigLastModifiedMs = file.lastModified();
         } catch (IOException e) {
             System.err.println("Error saving events.json: " + e.getMessage());
         }
@@ -590,6 +611,7 @@ public class EventHandler {
      * @return true if added successfully, false if event ID already exists
      */
     public boolean addEvent(EventConfig config) {
+        refreshEventsFromDiskIfChanged();
         if (events.containsKey(config.getEventId())) {
             return false;
         }
@@ -610,6 +632,7 @@ public class EventHandler {
      * @return true if removed, false if not found
      */
     public boolean removeEvent(String eventId) {
+        refreshEventsFromDiskIfChanged();
         if (!events.containsKey(eventId)) {
             return false;
         }
@@ -632,6 +655,7 @@ public class EventHandler {
      * Load the current event configs as a mutable list (for add/remove operations).
      */
     private List<EventConfig> loadEventsConfigList() {
+        refreshEventsFromDiskIfChanged();
         File file = configFilePath.toFile();
         if (!file.exists()) {
             return new ArrayList<>();
@@ -651,6 +675,7 @@ public class EventHandler {
      */
     public void reloadEvents() {
         loadEventsConfig();
+        eventsConfigLastModifiedMs = getEventsConfigLastModifiedMs();
     }
     
     /**
@@ -660,6 +685,7 @@ public class EventHandler {
      * @return true if added successfully, false if event not found
      */
     public boolean addSubEvent(String eventId, SubEvent subEvent) {
+        refreshEventsFromDiskIfChanged();
         if (!events.containsKey(eventId)) {
             return false;
         }
@@ -685,6 +711,7 @@ public class EventHandler {
      * @return true if removed, false if event or sub-event not found
      */
     public boolean removeSubEvent(String eventId, String subEventId) {
+        refreshEventsFromDiskIfChanged();
         if (!events.containsKey(eventId)) {
             return false;
         }
@@ -720,6 +747,37 @@ public class EventHandler {
             player.sendMessage(Message.raw(message));
         }
     }
+
+    private long getEventsConfigLastModifiedMs() {
+        File file = configFilePath.toFile();
+        if (!file.exists()) {
+            return -1L;
+        }
+        return file.lastModified();
+    }
+
+    private void refreshEventsFromDiskIfChanged() {
+        long now = System.currentTimeMillis();
+        if (now - lastEventsConfigCheckMs < EVENTS_CONFIG_CHECK_INTERVAL_MS) {
+            return;
+        }
+        lastEventsConfigCheckMs = now;
+
+        long diskLastModified = getEventsConfigLastModifiedMs();
+        if (diskLastModified == -1L) {
+            return;
+        }
+
+        if (eventsConfigLastModifiedMs == -1L) {
+            eventsConfigLastModifiedMs = diskLastModified;
+            return;
+        }
+
+        if (diskLastModified != eventsConfigLastModifiedMs) {
+            loadEventsConfig();
+            eventsConfigLastModifiedMs = getEventsConfigLastModifiedMs();
+        }
+    }
     
     // ==================== Ticking System ====================
     
@@ -734,6 +792,7 @@ public class EventHandler {
         @Override
         public void tick(float delta, int tick, ArchetypeChunk<EntityStore> chunk, 
                          Store<EntityStore> store, CommandBuffer<EntityStore> commandBuffer) {
+            refreshEventsFromDiskIfChanged();
             
             Event event;
             synchronized (eventLock) {

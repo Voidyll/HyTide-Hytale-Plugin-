@@ -7,10 +7,7 @@
     "Furniture.Doors"
   ],
   "Set": "Furniture_Temple_Earth",
-  "Interactions": {
-    "Primary": "Block_Primary",
-    "Secondary": "Block_Secondary"
-  },
+  "Interactions": {},
   "IconProperties": {
     "Rotation": [
       22.5,
@@ -67,7 +64,7 @@
       "Type": "CustomTemplate",
       "TemplateShapeAssetId": "DoorLargeConnectedBlockTemplate",
       "TemplateShapeBlockPatterns": {
-        "Default": "Furniture_Human_Ruins_Door_Large"
+        "Default": "HyTide_Furniture_Human_Ruins_Door_Large"
       }
     }
   },
