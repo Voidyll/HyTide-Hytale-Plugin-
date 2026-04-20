@@ -1,0 +1,40 @@
+{
+  "Type": "Variant",
+  "Reference": "HyTide_Template_Intelligent",
+  "Modify": {
+    "Appearance": "Hedera",
+    "DropList": "Empty",
+    "AttitudeGroup": "HyTide_PlayerEnemy",
+    "ViewSector": 250,
+    "HearingRange": 200,
+    "ViewRange": 30,
+    "AlertedRange": 200,
+    "LeashDistance": 500,
+    "HardLeashDistance": 500,
+    "AttackDistance": 2.5,
+    "CombatStrafeWeight": 50,
+    "KnockbackScale": 0,
+    "CombatBackOffDistanceRange": [
+      2,
+      2.5
+    ],
+    "MaxSpeed": 18,
+    "MaxHealth": 2000,
+    "Weapons": [],
+    "OffHand": [],
+    "UseCombatActionEvaluator": true,
+    "WakingIdleBehaviorComponent": "Component_Instruction_Stationary_Idle",
+    "_CombatConfig": "HyTide_CAE_Hedera",
+    "IsMemory": true,
+    "MemoriesCategory": "Voidtaken",
+    "NameTranslationKey": {
+      "Compute": "NameTranslationKey"
+    }
+  },
+  "Parameters": {
+    "NameTranslationKey": {
+      "Value": "server.npcRoles.Hedera.name",
+      "Description": "Translation key for NPC name display"
+    }
+  }
+}

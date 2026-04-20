@@ -1,0 +1,47 @@
+{
+  "Type": "Variant",
+  "Reference": "Template_Scarak_Louse",
+  "Modify": {
+    "Appearance": "Scarak_Louse",
+    "DropList": "Empty",
+    "AttackDistance": 1.6,
+    "Attack": "Scarak_Louse_Bite",
+    "AttitudeGroup": "HyTide_PlayerEnemy",
+    "FlockArray": [
+      "HyTide_Scarak_Louse"
+    ],
+    "MaxHealth": 75,
+    "MaxSpeed": 5,
+    "WanderRadius": 5,
+    "ViewRange": 30,
+    "FleeRange": 30,
+    "HearingRange": 200,
+    "AlertedRange": 200,
+    "IsMemory": true,
+    "MemoriesCategory": "Scarak",
+    "MemoriesNameOverride": "Scarak_Louse",
+    "NameTranslationKey": {
+      "Compute": "NameTranslationKey"
+    },
+    "_InteractionVars": {
+      "Melee_Damage": {
+        "Interactions": [
+          {
+            "Parent": "NPC_Attack_Melee_Damage",
+            "DamageCalculator": {
+              "BaseDamage": {
+                "Physical": 2
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "Parameters": {
+    "NameTranslationKey": {
+      "Value": "server.npcRoles.Scarak_Louse.name",
+      "Description": "Translation key for NPC name display"
+    }
+  }
+}

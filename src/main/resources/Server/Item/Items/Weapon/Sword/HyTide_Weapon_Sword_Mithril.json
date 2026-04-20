@@ -1,0 +1,219 @@
+{
+  "Parent": "Template_Weapon_Sword",
+  "Interactions": {
+    "Primary": "HyTide_Root_Weapon_Sword_Primary",
+    "Secondary": "HyTide_Root_Weapon_Sword_Secondary_Guard",
+    "Ability1": "HyTide_Root_Weapon_Sword_Signature_Vortexstrike"
+  },
+  "TranslationProperties": {
+    "Name": "server.items.Weapon_Sword_Mithril.name"
+  },
+  "Model": "Items/Weapons/Sword/Mithril.blockymodel",
+  "Texture": "Items/Weapons/Sword/Mithril_Texture.png",
+  "Quality": "Epic",
+  "ItemLevel": 50,
+  "Icon": "Icons/ItemsGenerated/Weapon_Sword_Mithril.png",
+  "Recipe": {
+    "TimeSeconds": 5,
+    "KnowledgeRequired": false,
+    "Input": [
+      {
+        "ItemId": "Ingredient_Bar_Mithril",
+        "Quantity": 6
+      },
+      {
+        "ItemId": "Ingredient_Leather_Storm",
+        "Quantity": 3
+      },
+      {
+        "ItemId": "Ingredient_Voidheart",
+        "Quantity": 1
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Type": "Crafting",
+        "Categories": [
+          "Weapon_Sword"
+        ],
+        "Id": "Weapon_Bench",
+        "RequiredTierLevel": 3
+      }
+    ]
+  },
+  "IconProperties": {
+    "Scale": 0.35,
+    "Rotation": [
+      45,
+      90,
+      0
+    ],
+    "Translation": [
+      -35,
+      -35
+    ]
+  },
+  "InteractionVars": {
+    "Swing_Left_Damage": {
+      "Interactions": [
+        {
+          "Parent": "HyTide_Weapon_Sword_Primary_Swing_Left_Damage",
+          "DamageCalculator": {
+            "BaseDamage": {
+              "Physical": 30
+            }
+          },
+          "DamageEffects": {
+            "WorldSoundEventId": "SFX_Sword_T2_Impact",
+            "LocalSoundEventId": "SFX_Sword_T2_Impact"
+          },
+          "EntityStatsOnHit": [
+            {
+              "EntityStatId": "SignatureEnergy",
+              "Amount": 1
+            },
+            {
+              "EntityStatId": "Health",
+              "Amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    "Swing_Right_Damage": {
+      "Interactions": [
+        {
+          "Parent": "HyTide_Weapon_Sword_Primary_Swing_Right_Damage",
+          "DamageCalculator": {
+            "BaseDamage": {
+              "Physical": 15
+            }
+          },
+          "DamageEffects": {
+            "WorldSoundEventId": "SFX_Sword_T2_Impact",
+            "LocalSoundEventId": "SFX_Sword_T2_Impact"
+          },
+          "EntityStatsOnHit": [
+            {
+              "EntityStatId": "SignatureEnergy",
+              "Amount": 1
+            },
+            {
+              "EntityStatId": "Health",
+              "Amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    "Swing_Down_Damage": {
+      "Interactions": [
+        {
+          "Parent": "HyTide_Weapon_Sword_Primary_Swing_Down_Damage",
+          "DamageCalculator": {
+            "BaseDamage": {
+              "Physical": 40
+            }
+          },
+          "DamageEffects": {
+            "WorldSoundEventId": "SFX_Sword_T2_Impact",
+            "LocalSoundEventId": "SFX_Sword_T2_Impact"
+          },
+          "EntityStatsOnHit": [
+            {
+              "EntityStatId": "SignatureEnergy",
+              "Amount": 1
+            },
+            {
+              "EntityStatId": "Health",
+              "Amount": 7
+            }
+          ]
+        }
+      ]
+    },
+    "Thrust_Damage": {
+      "Interactions": [
+        {
+          "Parent": "HyTide_Weapon_Sword_Primary_Thrust_Damage",
+          "DamageCalculator": {
+            "BaseDamage": {
+              "Physical": 80
+            }
+          },
+          "EntityStatsOnHit": [
+            {
+              "EntityStatId": "SignatureEnergy",
+              "Amount": 3
+            },
+            {
+              "EntityStatId": "Health",
+              "Amount": 10
+            }
+          ],
+          "DamageEffects": {
+            "WorldSoundEventId": "SFX_Sword_T2_Impact",
+            "LocalSoundEventId": "SFX_Sword_T2_Impact"
+          }
+        }
+      ]
+    },
+    "Vortexstrike_Spin_Damage": {
+      "Interactions": [
+        {
+          "Parent": "HyTide_Weapon_Sword_Signature_Vortexstrike_Spin_Damage",
+          "DamageCalculator": {
+            "BaseDamage": {
+              "Physical": 55
+            }
+          },
+          "DamageEffects": {
+            "WorldSoundEventId": "SFX_Sword_T2_Impact",
+            "LocalSoundEventId": "SFX_Sword_T2_Impact"
+          },
+          "EntityStatsOnHit": [
+            {
+              "EntityStatId": "Health",
+              "Amount": 3
+            }
+          ]
+        }
+      ]
+    },
+    "Vortexstrike_Stab_Damage": {
+      "Interactions": [
+        {
+          "Parent": "HyTide_Weapon_Sword_Signature_Vortexstrike_Stab_Damage",
+          "DamageCalculator": {
+            "BaseDamage": {
+              "Physical": 140
+            }
+          },
+          "DamageEffects": {
+            "WorldSoundEventId": "SFX_Sword_T2_Impact",
+            "LocalSoundEventId": "SFX_Sword_T2_Impact"
+          },
+          "EntityStatsOnHit": [
+            {
+              "EntityStatId": "Health",
+              "Amount": 15
+            }
+          ]
+        }
+      ]
+    },
+    "Guard_Wield": {
+      "Interactions": [
+        {
+          "Parent": "HyTide_Weapon_Sword_Secondary_Guard_Wield",
+          "StaminaCost": {
+            "Value": 20,
+            "CostType": "Damage"
+          }
+        }
+      ]
+    }
+  },
+  "MaxDurability": 999999999,
+  "DurabilityLossOnHit": 0.21
+}

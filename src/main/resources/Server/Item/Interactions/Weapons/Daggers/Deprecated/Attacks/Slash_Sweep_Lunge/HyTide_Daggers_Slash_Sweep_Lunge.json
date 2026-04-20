@@ -1,0 +1,14 @@
+{
+  "$Comment": "Plays the signature attack sequences",
+  "Type": "Serial",
+  "Interactions": [
+    {
+      "$Comment": "Status effect on the player on cast before the animation",
+      "Type": "ApplyEffect",
+      "EffectId": "Dagger_Signature"
+    },
+    "HyTide_Daggers_Slash_Sweep_Lunge_Slash",
+    "HyTide_Daggers_Slash_Sweep_Lunge_Sweep",
+    "HyTide_Daggers_Slash_Sweep_Lunge_Lunge"
+  ]
+}

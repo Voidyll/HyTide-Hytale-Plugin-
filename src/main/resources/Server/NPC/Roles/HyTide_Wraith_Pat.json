@@ -1,0 +1,78 @@
+{
+  "Type": "Variant",
+  "Reference": "HyTide_Template_Intelligent",
+  "Modify": {
+    "MaxHealth": 160,
+    "MaxSpeed": 18,
+    "WanderRadius": 5,
+    "ViewRange": 15,
+    "AlertedRange": 15,
+    "LeashDistance": 500,
+    "HardLeashDistance": 500,
+    "HearingRange": 15,
+    "KnockbackScale": 0.4,
+    "AttitudeGroup": "HyTide_PlayerEnemy",
+    "WakingPeriod": [
+      0,
+      24
+    ],
+    "DropList": "Empty",
+    "Appearance": "Wraith",
+    "Weapons": [
+      "Weapon_Battleaxe_Scythe_Void"
+    ],
+    "OffHand": [],
+    "FlockArray": [
+      "HyTide_Wraith_Pat"
+    ],
+    "Attack": "Root_NPC_Wraith_Attack",
+    "AttackDistance": 3.5,
+    "BlockProbability": 10,
+    "DesiredAttackDistanceRange": [
+      2,
+      2.5
+    ],
+    "FollowPatrolPath": {
+      "Compute": "FollowPatrolPath"
+    },
+    "Patrol": {
+      "Compute": "Patrol"
+    },
+    "_InteractionVars": {
+      "Melee_Damage": {
+        "Interactions": [
+          {
+            "Parent": "NPC_Attack_Melee_Damage",
+            "$Comment": "Sets damage and onhit effects",
+            "DamageCalculator": {
+              "Type": "Absolute",
+              "BaseDamage": {
+                "Physical": 24
+              },
+              "RandomPercentageModifier": 0.0
+            }
+          }
+        ]
+      }
+    },
+    "IsMemory": true,
+    "MemoriesCategory": "Mythic",
+    "NameTranslationKey": {
+      "Compute": "NameTranslationKey"
+    }
+  },
+  "Parameters": {
+    "FollowPatrolPath": {
+      "Value": true,
+      "Description": "Whether this NPC will follow patrol paths at all."
+    },
+    "Patrol": {
+      "Value": true,
+      "Description": "Whether or not this NPC will patrol during its waking hours, either alone or as part of a group."
+    },
+    "NameTranslationKey": {
+      "Value": "server.npcRoles.Wraith.name",
+      "Description": "Translation key for NPC name display"
+    }
+  }
+}

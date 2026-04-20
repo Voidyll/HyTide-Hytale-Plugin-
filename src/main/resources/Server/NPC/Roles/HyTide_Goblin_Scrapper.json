@@ -1,0 +1,25 @@
+{
+  "Type": "Variant",
+  "Reference": "HyTide_Template_Goblin_Scrapper",
+  "Modify": {
+    "_CombatConfig": "HyTide_CAE_Goblin_Scrapper",
+    "AttitudeGroup": "HyTide_PlayerEnemy",
+    "DropList": "Empty",
+    "MaxHealth": 75,
+    "ViewRange": 30,
+    "HearingRange": 200,
+    "AlertedRange": 200,
+    "IsMemory": true,
+    "MemoriesCategory": "Goblin",
+    "MemoriesNameOverride": "Goblin_Scrapper",
+    "NameTranslationKey": {
+      "Compute": "NameTranslationKey"
+    }
+  },
+  "Parameters": {
+    "NameTranslationKey": {
+      "Value": "server.npcRoles.Goblin_Scrapper.name",
+      "Description": "Translation key for NPC name display"
+    }
+  }
+}

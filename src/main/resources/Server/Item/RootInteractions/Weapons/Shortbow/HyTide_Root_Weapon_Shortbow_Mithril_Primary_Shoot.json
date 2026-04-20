@@ -1,0 +1,11 @@
+{
+  "RequireNewClick": true,
+  "Interactions": [
+    "HyTide_Weapon_Shortbow_Mithril_Primary_Shoot"
+  ],
+  "Tags": {
+    "Attack": [
+      "Ranged"
+    ]
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "Type": "Variant",
+  "Reference": "HyTide_Template_Intelligent",
+  "Modify": {
+    "MaxHealth": 3000,
+    "ViewSector": 150,
+    "DropList": "Empty",
+    "Appearance": "Golem_Crystal_Thunder",
+    "Weapons": [],
+    "OffHand": [],
+    "MaxSpeed": 10,
+    "WanderRadius": 5,
+    "ViewRange": 30,
+    "HearingRange": 200,
+    "AlertedRange": 200,
+    "KnockbackScale": 0,
+    "WakingIdleBehaviorComponent": "Component_Instruction_Stationary_Idle",
+    "Attack": "Root_NPC_Attack_Melee",
+    "AttackDistance": 2.5,
+    "BlockProbability": 0,
+    "DesiredAttackDistanceRange": [
+      2,
+      2.4
+    ],
+    "CombatAttackPostDelay": [
+      0.8,
+      1.5
+    ],
+    "CombatRelativeTurnSpeed": 0.25,
+    "LeashDistance": 500,
+    "HardLeashDistance": 500,
+    "AttitudeGroup": "HyTide_PlayerEnemy",
+    "IsMemory": true,
+    "MemoriesCategory": "Elemental",
+    "NameTranslationKey": {
+      "Compute": "NameTranslationKey"
+    },
+    "_InteractionVars": {
+      "Melee_Damage": {
+        "Interactions": [
+          {
+            "Parent": "NPC_Attack_Melee_Damage",
+            "DamageCalculator": {
+              "BaseDamage": {
+                "Physical": 12
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "Parameters": {
+    "NameTranslationKey": {
+      "Value": "server.npcRoles.Golem_Crystal_Thunder.name",
+      "Description": "Translation key for NPC name display"
+    }
+  }
+}

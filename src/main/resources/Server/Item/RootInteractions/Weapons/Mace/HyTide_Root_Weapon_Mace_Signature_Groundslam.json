@@ -1,0 +1,5 @@
+{
+  "Interactions": ["HyTide_Weapon_Mace_Signature_Groundslam"],
+  "Tags": { "Attack": ["Melee"] },
+  "RequireNewClick": true
+}

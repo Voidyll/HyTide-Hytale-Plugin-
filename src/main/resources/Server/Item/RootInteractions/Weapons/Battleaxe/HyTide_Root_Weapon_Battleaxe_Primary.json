@@ -1,0 +1,7 @@
+{
+  "RequireNewClick": true,
+  "ClickQueuingTimeout": 0.3,
+  "Cooldown": { "Cooldown": 0.75 },
+  "Interactions": ["HyTide_Weapon_Battleaxe_Primary"],
+  "Tags": { "Attack": ["Melee"] }
+}

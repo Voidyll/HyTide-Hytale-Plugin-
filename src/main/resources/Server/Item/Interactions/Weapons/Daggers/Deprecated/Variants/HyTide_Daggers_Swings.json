@@ -1,0 +1,11 @@
+{
+    "$Comment": "Run each attack in sequence",
+    "Type": "Chaining",
+    "ChainingAllowance": 3,
+    "Next": [
+      "HyTide_Daggers_Swing_Left",
+      "HyTide_Daggers_Swing_Right",
+      "HyTide_Daggers_Stab_Left",
+      "HyTide_Daggers_Stab_Right"
+    ]
+  }

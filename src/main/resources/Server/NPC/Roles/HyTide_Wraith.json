@@ -1,0 +1,67 @@
+{
+  "Type": "Variant",
+  "Reference": "HyTide_Template_Intelligent",
+  "Modify": {
+    "MaxHealth": 160,
+    "MaxSpeed": 18,
+    "WanderRadius": 5,
+    "ViewRange": 30,
+    "AlertedRange": 200,
+    "HearingRange": 200,
+    "LeashDistance": 500,
+    "HardLeashDistance": 500,
+    "AttitudeGroup": "HyTide_PlayerEnemy",
+    "WakingPeriod": [
+      0,
+      24
+    ],
+    "DropList": "Empty",
+    "Appearance": "Wraith",
+    "Weapons": [
+      "Weapon_Battleaxe_Scythe_Void"
+    ],
+    "OffHand": [],
+    "FlockArray": [
+      "HyTide_Aggressive_Rat",
+      "HyTide_Spawn_Void",
+      "HyTide_Skeleton_Burnt_Knight",
+      "HyTide_Skeleton_Frost_Knight",
+      "HyTide_Wraith"
+    ],
+    "Attack": "Root_NPC_Wraith_Attack",
+    "AttackDistance": 3.5,
+    "BlockProbability": 10,
+    "DesiredAttackDistanceRange": [
+      2,
+      2.5
+    ],
+    "_InteractionVars": {
+      "Melee_Damage": {
+        "Interactions": [
+          {
+            "Parent": "NPC_Attack_Melee_Damage",
+            "$Comment": "Sets damage and onhit effects",
+            "DamageCalculator": {
+              "Type": "Absolute",
+              "BaseDamage": {
+                "Physical": 24
+              },
+              "RandomPercentageModifier": 0.0
+            }
+          }
+        ]
+      }
+    },
+    "IsMemory": true,
+    "MemoriesCategory": "Mythic",
+    "NameTranslationKey": {
+      "Compute": "NameTranslationKey"
+    }
+  },
+  "Parameters": {
+    "NameTranslationKey": {
+      "Value": "server.npcRoles.Wraith.name",
+      "Description": "Translation key for NPC name display"
+    }
+  }
+}

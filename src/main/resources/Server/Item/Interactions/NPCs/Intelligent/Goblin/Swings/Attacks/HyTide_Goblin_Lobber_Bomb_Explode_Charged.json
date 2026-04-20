@@ -1,0 +1,7 @@
+{
+  "Parent": "HyTide_Goblin_Lobber_Bomb_Explode",
+  "Config": {
+    "EntityDamage": 6.0,
+    "EntityDamageRadius": 6
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "Type": "Variant",
+  "Reference": "HyTide_Template_Scarak_Broodmother",
+  "Modify": {
+    "MaxHealth": 5000,
+    "MaxSpeed": 3,
+    "ViewRange": 30,
+    "HearingRange": 200,
+    "AlertedRange": 200,
+    "IsMemory": true,
+    "MemoriesCategory": "Scarak",
+    "MemoriesNameOverride": "Scarak_Broodmother",
+    "AttitudeGroup": "HyTide_PlayerEnemy",
+    "NameTranslationKey": {
+      "Compute": "NameTranslationKey"
+    }
+  },
+  "Parameters": {
+    "NameTranslationKey": {
+      "Value": "server.npcRoles.Scarak_Broodmother.name",
+      "Description": "Translation key for NPC name display"
+    }
+  }
+}

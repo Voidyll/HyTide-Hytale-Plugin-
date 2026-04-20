@@ -1,0 +1,4 @@
+{
+  "RequireNewClick": true,
+  "Interactions": [{ "Type": "Replace", "Var": "Signature_Razorstrike", "DefaultOk": true, "DefaultValue": { "Interactions": ["HyTide_Weapon_Daggers_Signature_Razorstrike"] } }]
+}

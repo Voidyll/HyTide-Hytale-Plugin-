@@ -1,0 +1,18 @@
+{
+  "Type": "Variant",
+  "Reference": "HyTide_Template_Goblin_Scavenger",
+  "Modify": {
+    "Appearance": "Goblin_Hermit",
+    "AttitudeGroup": "HyTide_PlayerEnemy",
+    "DropList": "Empty",
+    "ChangeRole": true,
+    "_CombatConfig": "HyTide_CAE_Goblin_Scavenger",
+    "MaxHealth": 110,
+    "ViewRange": 30,
+    "HearingRange": 200,
+    "AlertedRange": 200,
+    "IsMemory": true,
+    "MemoriesCategory": "Goblin",
+    "MemoriesNameOverride": "Goblin_Scavenger"
+  }
+}

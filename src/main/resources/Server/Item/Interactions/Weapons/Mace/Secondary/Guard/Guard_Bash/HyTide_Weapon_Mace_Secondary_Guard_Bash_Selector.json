@@ -1,0 +1,54 @@
+{
+  "Type": "Selector",
+  "$Comment": "Length of Combat",
+  "RunTime": 0.083,
+  "Effects": {
+    "CameraEffect": "Mace_Bash",
+    "Particles": [
+      {
+        "SystemId": "Mace_Bash",
+        "TargetEntityPart": "PrimaryItem",
+        "TargetNodeName": "Handle",
+        "PositionOffset": {
+          "X": -0.8
+        },
+        "RotationOffset": {
+          "Yaw": -180
+        }
+      }
+    ]
+  },
+  "Selector": {
+    "Id": "Stab",
+    "TestLineOfSight": true,
+    "ExtendTop": 1,
+    "ExtendLeft": 1.5,
+    "ExtendRight": 1.5,
+    "ExtendBottom": 1,
+    "StartDistance": 0,
+    "EndDistance": 3
+  },
+  "HitBlock": {
+    "Interactions": [
+      "Block_Break_Adventure"
+    ]
+  },
+  "HitEntity": {
+    "Interactions": [
+      {
+        "Type": "Replace",
+        "Var": "Guard_Bash_Damage",
+        "DefaultOk": true,
+        "DefaultValue": {
+          "Interactions": [
+            "HyTide_Weapon_Mace_Secondary_Guard_Bash_Damage"
+          ]
+        }
+      }
+    ]
+  },
+  "Next": {
+    "Type": "Simple",
+    "RunTime": 0.333
+  }
+}

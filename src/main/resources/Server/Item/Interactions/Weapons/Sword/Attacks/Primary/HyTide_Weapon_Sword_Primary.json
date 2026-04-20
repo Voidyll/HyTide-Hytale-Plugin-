@@ -1,0 +1,17 @@
+{
+  "Type": "Charging",
+  "DisplayProgress": false,
+  "Next": {
+    "0": "HyTide_Weapon_Sword_Primary_Chain",
+    "0.2": {
+      "Type": "Replace",
+      "Var": "Thrust_Stamina",
+      "DefaultOk": true,
+      "DefaultValue": {
+        "Interactions": [
+          "HyTide_Weapon_Sword_Primary_Thrust_StaminaCondition"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "Type": "Variant",
+  "Reference": "HyTide_Template_Intelligent",
+  "Modify": {
+    "MaxHealth": 240,
+    "MaxSpeed": 15,
+    "WanderRadius": 5,
+    "ViewRange": 30,
+    "HearingRange": 200,
+    "AlertedRange": 200,
+    "LeashDistance": 500,
+    "HardLeashDistance": 500,
+    "KnockbackScale": 0.3,
+    "DropList": "Empty",
+    "Appearance": "Spawn_Void",
+    "AttitudeGroup": "HyTide_PlayerEnemy",
+    "WakingPeriod": [
+      0,
+      24
+    ],
+    "DefaultOffHandSlot": -1,
+    "NighttimeOffhandSlot": -1,
+    "Weapons": [
+      "Weapon_Longsword_Void"
+    ],
+    "OffHand": [],
+    "FlockArray": [
+      "HyTide_Aggressive_Rat",
+      "HyTide_Spawn_Void",
+      "HyTide_Skeleton_Burnt_Knight",
+      "HyTide_Skeleton_Frost_Knight",
+      "HyTide_Wraith"
+    ],
+    "Attack": "Root_NPC_Spawn_Void_Attack",
+    "AttackDistance": 2.5,
+    "DesiredAttackDistanceRange": [
+      2,
+      2.5
+    ],
+    "CombatAlwaysMovingWeight": 20,
+    "CombatBackOffDistanceRange": [
+      3,
+      3.5
+    ],
+    "CombatBackOffDurationRange": [
+      2,
+      2
+    ],
+    "CombatBackwardsRelativeSpeed": 0.2,
+    "CombatAttackPostDelay": [
+      0.6,
+      1
+    ],
+    "CombatMessageTargetGroups": [
+      "Skeleton"
+    ],
+    "IsMemory": true,
+    "MemoriesCategory": "Voidspawn",
+    "_InteractionVars": {
+      "Melee_Damage": {
+        "Interactions": [
+          {
+            "Parent": "NPC_Attack_Melee_Damage",
+            "DamageCalculator": {
+              "Type": "Absolute",
+              "BaseDamage": {
+                "Physical": 19
+              },
+              "RandomPercentageModifier": 0.0
+            },
+            "DamageEffects": {
+              "Knockback": {
+                "Force": 0.5
+              }
+            }
+          }
+        ]
+      }
+    },
+    "NameTranslationKey": {
+      "Compute": "NameTranslationKey"
+    }
+  },
+  "Parameters": {
+    "NameTranslationKey": {
+      "Value": "server.npcRoles.Spawn_Void.name",
+      "Description": "Translation key for NPC name display"
+    }
+  }
+}

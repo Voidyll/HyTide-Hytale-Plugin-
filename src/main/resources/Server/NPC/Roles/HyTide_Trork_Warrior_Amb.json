@@ -1,0 +1,47 @@
+{
+  "Type": "Variant",
+  "Reference": "HyTide_Template_Trork_Melee",
+  "Modify": {
+    "Appearance": "Trork_Warrior",
+    "DropList": "Empty",
+    "Weapons": [
+      "Weapon_Battleaxe_Stone_Trork",
+      "Rubble_Stone_Medium"
+    ],
+    "MaxHealth": 160,
+    "MaxSpeed": 15,
+    "ViewRange": 30,
+    "HearingRange": 20,
+    "AlertedRange": 30,
+    "LeashDistance": 500,
+    "HardLeashDistance": 500,
+    "KnockbackScale": 0.3,
+    "AttitudeGroup": "HyTide_PlayerEnemy",
+    "IsMemory": true,
+    "MemoriesCategory": "Trork",
+    "MemoriesNameOverride": "Trork_Warrior",
+    "_InteractionVars": {
+      "Melee_Damage": {
+        "Interactions": [
+          {
+            "Parent": "NPC_Attack_Melee_Damage",
+            "DamageCalculator": {
+              "BaseDamage": {
+                "Physical": 9
+              }
+            }
+          }
+        ]
+      }
+    },
+    "NameTranslationKey": {
+      "Compute": "NameTranslationKey"
+    }
+  },
+  "Parameters": {
+    "NameTranslationKey": {
+      "Value": "server.npcRoles.Trork_Warrior.name",
+      "Description": "Translation key for NPC name display"
+    }
+  }
+}

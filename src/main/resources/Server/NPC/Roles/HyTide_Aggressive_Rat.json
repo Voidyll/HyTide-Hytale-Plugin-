@@ -1,0 +1,86 @@
+{
+  "Type": "Variant",
+  "Reference": "HyTide_Template_Predator",
+  "Modify": {
+    "DropList": "Empty",
+    "Appearance": "Rat",
+    "AttitudeGroup": "HyTide_PlayerEnemy",
+    "MaxHealth": 75,
+    "MaxSpeed": 15,
+    "ViewRange": 30,
+    "HearingRange": 200,
+    "AlertedRange": 200,
+    "AlertedTime": [
+      2,
+      3
+    ],
+    "FlockArray": [
+      "HyTide_Aggressive_Rat",
+      "HyTide_Spawn_Void",
+      "HyTide_Skeleton_Burnt_Knight",
+      "HyTide_Skeleton_Frost_Knight",
+      "HyTide_Wraith"
+    ],
+    "FleeIfNotThreatened": false,
+    "FleeRange": 15,
+    "HardLeashDistance": 500,
+    "LeashDistance": 500,
+    "CombatBehaviorDistance": 3,
+    "CombatBackOffAfterAttack": false,
+    "Attack": "Root_NPC_Rat_Attack",
+    "AttackDistance": 2,
+    "ChaseRelativeSpeed": 0.6,
+    "CombatMovingRelativeSpeed": 0.6,
+    "AlwaysSleepAtNight": false,
+    "DayTimeNapWeight": 0,
+    "TimidDuringDay": false,
+    "DayFlavorAnimation": "IdlePassive",
+    "NightFlavorAnimation": "IdlePassive",
+    "IsMemory": true,
+    "MemoriesCategory": "Critter",
+    "MemoriesNameOverride": "Aggressive Rat",
+    "_InteractionVars": {
+      "Melee_Start": {
+        "Interactions": [
+          {
+            "Parent": "Rat_Bite",
+            "$Comment": "Sets animations and delay before hit",
+            "Effects": {
+              "ItemPlayerAnimationsId": "Rat_Default",
+              "ItemAnimationId": "Bite"
+            },
+            "RunTime": 0.117
+          }
+        ]
+      },
+      "Bite_Damage": {
+        "Interactions": [
+          {
+            "Parent": "Rat_Bite_Damage",
+            "DamageCalculator": {
+              "Type": "Absolute",
+              "BaseDamage": {
+                "Physical": 5
+              },
+              "RandomPercentageModifier": 0.0
+            },
+            "DamageEffects": {
+              "Knockback": {
+                "Force": 0.5
+              }
+            }
+          }
+        ]
+      }
+    },
+    "NameTranslationKey": {
+      "Compute": "NameTranslationKey"
+    }
+  },
+  "Parameters": {
+    "NameTranslationKey": {
+      "Value": "server.npcRoles.AggressiveRat.name",
+      "Description": "Translation key for custom aggressive rat NPC"
+    }
+  }
+}

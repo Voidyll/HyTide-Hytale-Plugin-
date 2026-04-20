@@ -1,0 +1,6 @@
+{
+  "Parent": "Weapon_Arrow_Crude",
+  "ItemEntity": {
+    "Lifetime": 50000.0
+  }
+}

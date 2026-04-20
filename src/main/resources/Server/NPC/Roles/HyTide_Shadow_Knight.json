@@ -1,0 +1,61 @@
+{
+  "Type": "Variant",
+  "Reference": "HyTide_Template_Predator",
+  "Modify": {
+    "Appearance": "Shadow_Knight",
+    "WanderRadius": 5,
+    "ViewRange": 30,
+    "HearingRange": 200,
+    "AlertedRange": 200,
+    "LeashDistance": 500,
+    "HardLeashDistance": 500,
+    "KnockbackScale": 0,
+    "AttitudeGroup": "HyTide_PlayerEnemy",
+    "DropList": "Empty",
+    "MaxSpeed": 12,
+    "Attack": "Root_NPC_Attack_Melee",
+    "AlwaysSleepAtNight": false,
+    "MaxHealth": 3000,
+    "IsMemory": true,
+    "MemoriesCategory": "Mythic",
+    "_InteractionVars": {
+      "Melee_Start": {
+        "Interactions": [
+          {
+            "Parent": "NPC_Attack_Melee_Simple",
+            "$Comment": "Sets animations and delay before hit",
+            "Effects": {
+              "ItemPlayerAnimationsId": "Hound_Bleached_Default",
+              "ItemAnimationId": "Bite"
+            },
+            "RunTime": 0.333
+          }
+        ]
+      },
+      "Melee_Damage": {
+        "Interactions": [
+          {
+            "Parent": "NPC_Attack_Melee_Damage",
+            "$Comment": "Sets damage and onhit effects",
+            "DamageCalculator": {
+              "Type": "Absolute",
+              "BaseDamage": {
+                "Physical": 20
+              },
+              "RandomPercentageModifier": 0.0
+            }
+          }
+        ]
+      }
+    },
+    "NameTranslationKey": {
+      "Compute": "NameTranslationKey"
+    }
+  },
+  "Parameters": {
+    "NameTranslationKey": {
+      "Value": "server.npcRoles.Shadow_Knight.name",
+      "Description": "Translation key for NPC name display"
+    }
+  }
+}

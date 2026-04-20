@@ -1,0 +1,9 @@
+{
+  "Type": "Serial",
+  "Interactions": [
+    "HyTide_Daggers_Stab_Backflip_Left",
+    "HyTide_Daggers_Stab_Backflip_Right",
+    "HyTide_Daggers_Kick_Lunge",
+    "HyTide_Daggers_Kick"
+  ]
+}

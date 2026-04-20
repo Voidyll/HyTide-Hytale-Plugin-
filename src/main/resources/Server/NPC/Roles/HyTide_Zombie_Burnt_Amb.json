@@ -1,0 +1,35 @@
+{
+  "Type": "Variant",
+  "Reference": "HyTide_Template_Aggressive_Zombies_Burnt_Amb",
+  "Modify": {
+    "DropList": "Empty",
+    "Appearance": "Zombie_Burnt",
+    "AttackSequence": "Component_Instruction_Attack_Sequence_Zombie_Burnt",
+    "MaxHealth": 140,
+    "IsMemory": true,
+    "MemoriesCategory": "Undead",
+    "_InteractionVars": {
+      "Melee_Damage": {
+        "Interactions": [
+          {
+            "Parent": "NPC_Attack_Melee_Damage",
+            "DamageCalculator": {
+              "BaseDamage": {
+                "Physical": 10
+              }
+            }
+          }
+        ]
+      }
+    },
+    "NameTranslationKey": {
+      "Compute": "NameTranslationKey"
+    }
+  },
+  "Parameters": {
+    "NameTranslationKey": {
+      "Value": "server.npcRoles.Zombie_Burnt.name",
+      "Description": "Translation key for NPC name display"
+    }
+  }
+}

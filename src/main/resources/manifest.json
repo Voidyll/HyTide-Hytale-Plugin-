@@ -1,0 +1,21 @@
+{
+  "Group": "group",
+  "Name": "HyTide",
+  "Version": "1.1.1",
+  "Description": "Create custom enemy spawns that mimic the spawning structure of Vermintide 2",
+  "Authors": [
+    {
+      "Name": "Voidyll"
+    }
+  ],
+  "Website": "",
+  "ServerVersion": "2026.03.26-89796e57b",
+  "Dependencies": {},
+  "OptionalDependencies": {},
+  "DisabledByDefault": false,
+  "Main": "me.voidyll.FirstPlugin",
+  "IncludesAssetPack": true,
+  "AssetPack": {
+    "ItemsPath": "items"
+  }
+}

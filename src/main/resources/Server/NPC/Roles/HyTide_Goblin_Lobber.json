@@ -1,0 +1,24 @@
+{
+  "Type": "Variant",
+  "Reference": "HyTide_Template_Goblin_Lobber",
+  "Modify": {
+    "Appearance": "Goblin_Lobber",
+    "_CombatConfig": "CAE_Goblin_Lobber",
+    "AttitudeGroup": "HyTide_PlayerEnemy",
+    "DropList": "Empty",
+    "MaxHealth": 100,
+    "ViewRange": 30,
+    "HearingRange": 200,
+    "AlertedRange": 200,
+    "IsMemory": true,
+    "MemoriesCategory": "Goblin",
+    "MemoriesNameOverride": "Goblin_Lobber",
+    "NameTranslationKey": { "Compute": "NameTranslationKey" }
+  },
+  "Parameters": {
+    "NameTranslationKey": {
+      "Value": "server.npcRoles.Goblin_Lobber.name",
+      "Description": "Translation key for NPC name display"
+    }
+  }
+}
