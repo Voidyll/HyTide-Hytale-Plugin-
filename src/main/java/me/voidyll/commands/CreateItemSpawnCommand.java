@@ -13,6 +13,7 @@ import com.hypixel.hytale.server.core.modules.entity.component.TransformComponen
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
+import me.voidyll.utils.WorldUtil;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import me.voidyll.data.ItemSpawnDataManager;
 import me.voidyll.data.ItemSpawnMarkerData;
@@ -45,7 +46,7 @@ public class CreateItemSpawnCommand extends CommandBase {
             return;
         }
         
-        World targetWorld = Universe.get().getDefaultWorld();
+        World targetWorld = WorldUtil.getPlayerWorld(context.sender().getUuid());
         if (targetWorld == null) {
             context.sendMessage(Message.raw("Error: No world available."));
             return;

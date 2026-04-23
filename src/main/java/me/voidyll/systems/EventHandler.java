@@ -21,6 +21,7 @@ import me.voidyll.systems.events.EventConfig;
 import me.voidyll.systems.events.SubEvent;
 import me.voidyll.data.DoorStateData;
 import me.voidyll.utils.CommandExecutor;
+import me.voidyll.utils.WorldUtil;
 
 import java.io.File;
 import java.io.FileReader;
@@ -99,7 +100,7 @@ public class EventHandler {
             return false;
         }
         
-        World world = Universe.get().getDefaultWorld();
+        World world = WorldUtil.getGameWorld();
         if (world == null) {
             return false;
         }
@@ -151,7 +152,7 @@ public class EventHandler {
         
         String eventId = currentEvent.getEventId();
         
-        World world = Universe.get().getDefaultWorld();
+        World world = WorldUtil.getGameWorld();
         if (world != null) {
             currentEvent.onEnd(world);
         }
@@ -691,7 +692,7 @@ public class EventHandler {
     // ==================== Utilities ====================
     
     private void broadcastToAllPlayers(String message) {
-        World world = Universe.get().getDefaultWorld();
+        World world = WorldUtil.getGameWorld();
         if (world == null) {
             return;
         }
@@ -761,7 +762,7 @@ public class EventHandler {
             long deltaMs = currentTime - lastTickTime;
             lastTickTime = currentTime;
             
-            World world = Universe.get().getDefaultWorld();
+            World world = WorldUtil.getGameWorld();
             if (world == null) {
                 return;
             }

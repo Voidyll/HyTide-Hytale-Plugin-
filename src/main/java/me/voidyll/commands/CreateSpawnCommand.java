@@ -14,6 +14,7 @@ import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import me.voidyll.data.SpawnDataManager;
+import me.voidyll.utils.WorldUtil;
 import me.voidyll.data.SpawnMarkerData;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
@@ -72,7 +73,7 @@ public class CreateSpawnCommand extends CommandBase {
         // Try to get the world by iterating through all worlds
         // This is a workaround for accessing world without component access
         // We'll try to find the player in each world, or use the default world
-        World targetWorld = Universe.get().getDefaultWorld();
+        World targetWorld = WorldUtil.getPlayerWorld(context.sender().getUuid());
         
         if (targetWorld == null) {
             context.sendMessage(Message.raw("Error: No world available."));

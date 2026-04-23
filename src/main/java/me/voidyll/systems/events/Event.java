@@ -1,6 +1,7 @@
 package me.voidyll.systems.events;
 
 import com.hypixel.hytale.server.core.universe.world.World;
+import me.voidyll.utils.WorldUtil;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -337,7 +338,7 @@ public abstract class Event {
         
         World world = null;
         try {
-            world = com.hypixel.hytale.server.core.universe.Universe.get().getDefaultWorld();
+            world = WorldUtil.getGameWorld();
         } catch (Exception e) {
             System.err.println("[Event:"+eventId+"] Failed to get world for sub-event execution");
             e.printStackTrace();

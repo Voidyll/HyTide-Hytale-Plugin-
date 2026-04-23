@@ -16,6 +16,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import me.voidyll.data.ItemSpawnDataManager;
 import me.voidyll.data.ItemSpawnMarkerData;
+import me.voidyll.utils.WorldUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,7 @@ public class ItemSpawnSystem {
      * Must be called from the world thread.
      */
     public void removeAllDroppedItems() {
-        World world = Universe.get().getDefaultWorld();
+        World world = WorldUtil.getGameWorld();
         if (world == null) {
             return;
         }
@@ -112,7 +113,7 @@ public class ItemSpawnSystem {
             // Get the world and spawn the item
             World world = Universe.get().getWorld(marker.getWorldName());
             if (world == null) {
-                world = Universe.get().getDefaultWorld();
+                world = WorldUtil.getGameWorld();
             }
 
             if (world == null) {

@@ -26,6 +26,7 @@ import me.voidyll.data.RoleDefinition;
 import me.voidyll.data.RoleSelector;
 import me.voidyll.data.SpawnDataManager;
 import me.voidyll.data.SpawnMarkerData;
+import me.voidyll.utils.WorldUtil;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 import java.util.ArrayList;
@@ -90,7 +91,7 @@ public class TriggerSpawnCommand extends CommandBase {
             return new SpawnResult(0, 0, msg);
         }
 
-        World targetWorld = Universe.get().getDefaultWorld();
+        World targetWorld = WorldUtil.getGameWorld();
         if (targetWorld == null) {
             return new SpawnResult(0, 0, "No world available");
         }
@@ -281,7 +282,7 @@ public class TriggerSpawnCommand extends CommandBase {
         }
 
         // Get world (thread-safe operation)
-        World targetWorld = Universe.get().getDefaultWorld();
+        World targetWorld = WorldUtil.getPlayerWorld(context.sender().getUuid());
         if (targetWorld == null) {
             context.sendMessage(Message.raw("Error: No world available."));
             return;

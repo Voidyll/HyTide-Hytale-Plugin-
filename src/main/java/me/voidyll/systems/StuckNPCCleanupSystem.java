@@ -25,6 +25,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.npc.entities.NPCEntity;
 import com.hypixel.hytale.server.npc.role.support.MarkedEntitySupport;
+import me.voidyll.utils.WorldUtil;
 
 
 /**
@@ -121,7 +122,7 @@ public class StuckNPCCleanupSystem {
             }
             lastCheckTime = currentTime;
 
-            World world = Universe.get().getDefaultWorld();
+            World world = WorldUtil.getGameWorld();
             
             // Get Store to query all NPCs across all chunks
             EntityStore entityStore = world != null ? world.getEntityStore() : null;
@@ -198,7 +199,7 @@ public class StuckNPCCleanupSystem {
                 boolean hasTarget = hasActiveTarget(npcEntity, store);
                 if (!hasTarget) {
                     // Remove from tracking if no target
-                    World world = Universe.get().getDefaultWorld();
+                    World world = WorldUtil.getGameWorld();
                     trackedNPCs.remove(npcUuid);
                     return;
                 }
@@ -206,7 +207,7 @@ public class StuckNPCCleanupSystem {
                 // Check if NPC is near any player (exempt if within 30 blocks)
                 if (isNearPlayer(currentPosition, playerPositions)) {
                     // Don't track NPCs near players
-                    World world = Universe.get().getDefaultWorld();
+                    World world = WorldUtil.getGameWorld();
                     trackedNPCs.remove(npcUuid);
                     return;
                 }
@@ -217,7 +218,7 @@ public class StuckNPCCleanupSystem {
                     // First time seeing this NPC with a target
                     history = new NPCPositionHistory(currentPosition, currentTime, npcUuid, npcRef);
                     trackedNPCs.put(npcUuid, history);
-                    World world = Universe.get().getDefaultWorld();
+                    World world = WorldUtil.getGameWorld();
                 } else {
                     // Update position
                     history.updatePosition(currentPosition, currentTime);
@@ -225,7 +226,7 @@ public class StuckNPCCleanupSystem {
                     // Check if stuck
                     if (history.hasBeenTrackedFor30Seconds(currentTime)) {
                         double distanceMoved = history.getDistanceMovedIn30Seconds();
-                        World world = Universe.get().getDefaultWorld();
+                        World world = WorldUtil.getGameWorld();
                         if (world != null) {
                             sendDebugToAllPlayers(world, "[Stuck NPC Debug] NPC " + npcUuid.toString().substring(0, 8) + "... tracked for 30s, moved " + String.format("%.2f", distanceMoved) + " blocks (threshold: " + STUCK_DISTANCE_THRESHOLD + ")");
                         }
@@ -264,7 +265,7 @@ public class StuckNPCCleanupSystem {
                     try {
                         // Clear the invalid target by setting to null
                         markedEntitySupport.setMarkedEntity(MarkedEntitySupport.DEFAULT_TARGET_SLOT, null);
-                        World world = Universe.get().getDefaultWorld();
+                        World world = WorldUtil.getGameWorld();
                         if (world != null) {
                             sendDebugToAllPlayers(world, "[Stuck NPC Debug] Cleared invalid (non-player) target from NPC " + npcEntity.getUuid().toString().substring(0, 8));
                         }
@@ -295,7 +296,7 @@ public class StuckNPCCleanupSystem {
         }
 
         private List<Vector3d> getPlayerPositions() {
-            World world = Universe.get().getDefaultWorld();
+            World world = WorldUtil.getGameWorld();
             if (world == null) {
                 return List.of();
             }
@@ -318,7 +319,7 @@ public class StuckNPCCleanupSystem {
                 return;
             }
 
-            World world = Universe.get().getDefaultWorld();
+            World world = WorldUtil.getGameWorld();
             if (world == null) {
                 entitiesToRemove.clear();
                 return;

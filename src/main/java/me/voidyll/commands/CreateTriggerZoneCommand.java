@@ -14,6 +14,7 @@ import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import me.voidyll.data.TriggerZoneData;
+import me.voidyll.utils.WorldUtil;
 import me.voidyll.data.TriggerZoneManager;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
@@ -56,7 +57,7 @@ public class CreateTriggerZoneCommand extends CommandBase {
             return;
         }
 
-        World targetWorld = Universe.get().getDefaultWorld();
+        World targetWorld = WorldUtil.getPlayerWorld(context.sender().getUuid());
         if (targetWorld == null) {
             context.sendMessage(Message.raw("Error: No world available."));
             return;

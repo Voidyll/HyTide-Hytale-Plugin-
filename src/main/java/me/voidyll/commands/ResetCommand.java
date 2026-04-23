@@ -7,6 +7,7 @@ import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
+import me.voidyll.utils.WorldUtil;
 import me.voidyll.data.ActivatedTriggersManager;
 import me.voidyll.data.ActiveSpawnGroupManager;
 import me.voidyll.data.BlockInteractTriggerManager;
@@ -80,7 +81,7 @@ public class ResetCommand extends CommandBase {
             }
         }
 
-        World targetWorld = Universe.get().getDefaultWorld();
+        World targetWorld = WorldUtil.getPlayerWorld(context.sender().getUuid());
         if (targetWorld == null) {
             context.sendMessage(Message.raw("Error: No world available."));
             return;

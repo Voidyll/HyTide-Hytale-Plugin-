@@ -17,6 +17,7 @@ import me.voidyll.commands.TriggerSpawnCommand;
 import me.voidyll.data.ActiveSpawnGroupManager;
 import me.voidyll.data.RoleConfigManager;
 import me.voidyll.data.RoleDefinition;
+import me.voidyll.utils.WorldUtil;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -292,7 +293,7 @@ public class SpawnDirectorSystem {
 
             if (currentTime - lastDebugTimeMs >= 1000) {
                 lastDebugTimeMs = currentTime;
-                World world = Universe.get().getDefaultWorld();
+                World world = WorldUtil.getGameWorld();
                 long hordeSeconds = Math.max(0, hordeTimerRemainingMs) / 1000;
                 long specialSeconds = Math.max(0, specialTimerRemainingMs) / 1000;
                 String waveInfo = hordeWaveInProgress
