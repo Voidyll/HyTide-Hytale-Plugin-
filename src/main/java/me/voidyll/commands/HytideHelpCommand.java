@@ -249,7 +249,7 @@ public class HytideHelpCommand extends CommandBase {
             case "create-trigger-zone":
                 context.sendMessage(Message.raw("=== /create-trigger-zone ==="));
                 context.sendMessage(Message.raw("Creates a trigger zone at your position that activates spawns when entered."));
-                context.sendMessage(Message.raw("Usage: /create-trigger-zone <name> <radius> <groupNumber> <type> [identifier]"));
+                context.sendMessage(Message.raw("Usage: /create-trigger-zone <name> <groupNumber> <radius> <type> [identifier]"));
                 context.sendMessage(Message.raw(""));
                 context.sendMessage(Message.raw("Args:"));
                 context.sendMessage(Message.raw("  name - Unique zone name"));

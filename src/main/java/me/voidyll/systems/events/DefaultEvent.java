@@ -1,9 +1,22 @@
 package me.voidyll.systems.events;
 
+import com.hypixel.hytale.component.ArchetypeChunk;
+import com.hypixel.hytale.component.CommandBuffer;
+import com.hypixel.hytale.component.RemoveReason;
+import com.hypixel.hytale.component.Store;
+import com.hypixel.hytale.server.core.command.system.CommandSender;
+import com.hypixel.hytale.server.core.console.ConsoleSender;
+import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.accessor.BlockAccessor;
 import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
+import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import java.util.List;
+import com.hypixel.hytale.server.npc.entities.NPCEntity;
+import com.hypixel.hytale.server.npc.NPCPlugin;
 import com.hypixel.hytale.math.util.ChunkUtil;
+import com.hypixel.hytale.math.vector.Vector3d;
+import com.hypixel.hytale.math.vector.Vector3f;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
 import me.voidyll.utils.CommandExecutor;
@@ -59,7 +72,7 @@ public class DefaultEvent extends Event {
                 break;
                 
             case DESPAWN_ALL_NPCS:
-                handleDespawnAllNpcs();
+                handleDespawnAllNpcs(world);
                 break;
                 
             case SPAWN_NPC:
@@ -71,7 +84,7 @@ public class DefaultEvent extends Event {
                 break;
                 
             case SET_BLOCK_STATE:
-                handleSetBlockState(actionData);
+                handleSetBlockState(actionData, world);
                 break;
                 
             default:
@@ -128,20 +141,22 @@ public class DefaultEvent extends Event {
                     continue;
                 }
                 
-                int x = coord.get(0).getAsInt();
-                int y = coord.get(1).getAsInt();
-                int z = coord.get(2).getAsInt();
+                final int x = coord.get(0).getAsInt();
+                final int y = coord.get(1).getAsInt();
+                final int z = coord.get(2).getAsInt();
                 
-                // Read and track the original block type before removing
-                trackOriginalBlockType(world, x, y, z);
-                
-                // Use command to remove block at coordinate (async)
-                String command = "block set " + x + " " + y + " " + z + " empty";
+                // Queue everything on the correct world thread: track THEN set (order matters)
                 final int index = i;
-                CommandExecutor.executeCommand(command).exceptionally(ex -> {
-                    System.err.println("[Event:"+eventId+"] Error removing block at index " + index);
-                    ex.printStackTrace();
-                    return null;
+                world.execute(() -> {
+                    trackOriginalBlockType(world, x, y, z);
+                    long chunkKey = ChunkUtil.indexChunkFromBlock(x, z);
+                    BlockAccessor chunk = world.getChunkIfLoaded(chunkKey);
+                    if (chunk != null) {
+                        chunk.setBlock(x, y, z, "empty");
+                        System.out.println("[Event:"+eventId+"] Removed block at (" + x + "," + y + "," + z + ")");
+                    } else {
+                        System.err.println("[Event:"+eventId+"] Chunk not loaded for block removal at index " + index);
+                    }
                 });
             } catch (Exception e) {
                 System.err.println("[Event:"+eventId+"] Error processing block removal at index " + i);
@@ -149,7 +164,7 @@ public class DefaultEvent extends Event {
             }
         }
         
-        System.out.println("[Event:"+eventId+"] Initiated removal of " + coordsArray.size() + " blocks");
+        System.out.println("[Event:"+eventId+"] Queued removal of " + coordsArray.size() + " blocks");
     }
     
     /**
@@ -162,7 +177,7 @@ public class DefaultEvent extends Event {
             return;
         }
         
-        String blockType = data.get("blockType").getAsString();
+        final String blockType = data.get("blockType").getAsString();
         if (blockType == null || blockType.isEmpty()) {
             System.err.println("[Event:"+eventId+"] ADD_BLOCKS has null or empty blockType");
             return;
@@ -182,20 +197,22 @@ public class DefaultEvent extends Event {
                     continue;
                 }
                 
-                int x = coord.get(0).getAsInt();
-                int y = coord.get(1).getAsInt();
-                int z = coord.get(2).getAsInt();
+                final int x = coord.get(0).getAsInt();
+                final int y = coord.get(1).getAsInt();
+                final int z = coord.get(2).getAsInt();
                 
-                // Read and track the original block type before adding
-                trackOriginalBlockType(world, x, y, z);
-                
-                // Use command to place block at coordinate (async)
-                String command = "block set " + x + " " + y + " " + z + " " + blockType;
+                // Queue everything on the correct world thread: track THEN set (order matters)
                 final int index = i;
-                CommandExecutor.executeCommand(command).exceptionally(ex -> {
-                    System.err.println("[Event:"+eventId+"] Error adding block at index " + index);
-                    ex.printStackTrace();
-                    return null;
+                world.execute(() -> {
+                    trackOriginalBlockType(world, x, y, z);
+                    long chunkKey = ChunkUtil.indexChunkFromBlock(x, z);
+                    BlockAccessor chunk = world.getChunkIfLoaded(chunkKey);
+                    if (chunk != null) {
+                        chunk.setBlock(x, y, z, blockType);
+                        System.out.println("[Event:"+eventId+"] Added block '" + blockType + "' at (" + x + "," + y + "," + z + ")");
+                    } else {
+                        System.err.println("[Event:"+eventId+"] Chunk not loaded for block addition at index " + index);
+                    }
                 });
             } catch (Exception e) {
                 System.err.println("[Event:"+eventId+"] Error processing block addition at index " + i);
@@ -203,7 +220,7 @@ public class DefaultEvent extends Event {
             }
         }
         
-        System.out.println("[Event:"+eventId+"] Initiated addition of " + coordsArray.size() + " blocks of type '" + blockType + "'");
+        System.out.println("[Event:"+eventId+"] Queued addition of " + coordsArray.size() + " blocks of type '" + blockType + "'");
     }
     
     /**
@@ -240,14 +257,26 @@ public class DefaultEvent extends Event {
      * Despawn all NPCs.
      * Expected format: { } (no parameters needed)
      */
-    private void handleDespawnAllNpcs() {
-        // Execute command asynchronously
-        CommandExecutor.executeCommand("npc clean --confirm").exceptionally(ex -> {
-            System.err.println("[Event:"+eventId+"] Error despawning NPCs");
-            ex.printStackTrace();
-            return null;
+    private void handleDespawnAllNpcs(World world) {
+        // Remove all NPCs directly via the entity store on the correct world thread
+        world.execute(() -> {
+            try {
+                EntityStore entityStore = world.getEntityStore();
+                Store<EntityStore> worldStore = entityStore.getStore();
+                worldStore.forEachChunk(
+                    NPCEntity.getComponentType(),
+                    (ArchetypeChunk<EntityStore> chunk, CommandBuffer<EntityStore> buffer) -> {
+                        for (int i = 0; i < chunk.size(); i++) {
+                            buffer.tryRemoveEntity(chunk.getReferenceTo(i), RemoveReason.REMOVE);
+                        }
+                    }
+                );
+                System.out.println("[Event:"+eventId+"] All NPCs despawned");
+            } catch (Exception e) {
+                System.err.println("[Event:"+eventId+"] Error despawning NPCs");
+                e.printStackTrace();
+            }
         });
-        System.out.println("[Event:"+eventId+"] Initiating NPC despawn");
     }
     
     /**
@@ -260,26 +289,44 @@ public class DefaultEvent extends Event {
             return;
         }
         
-        String npcType = data.get("npcType").getAsString();
+        final String npcType = data.get("npcType").getAsString();
         if (npcType == null || npcType.isEmpty()) {
             System.err.println("[Event:"+eventId+"] SPAWN_NPC has null or empty npcType");
             return;
         }
         
-        int x = data.get("x").getAsInt();
-        int y = data.get("y").getAsInt();
-        int z = data.get("z").getAsInt();
+        final double x = data.get("x").getAsDouble();
+        final double y = data.get("y").getAsDouble();
+        final double z = data.get("z").getAsDouble();
         
-        // Execute command asynchronously
-        String command = "spawn " + npcType + " " + x + " " + y + " " + z;
-        CommandExecutor.executeCommand(command).exceptionally(ex -> {
-            System.err.println("[Event:"+eventId+"] Error spawning NPC '" + npcType + "'");
-            ex.printStackTrace();
-            return null;
+        // Spawn NPC directly on the correct world thread (avoids command world-targeting issues)
+        world.execute(() -> {
+            try {
+                EntityStore entityStore = world.getEntityStore();
+                Store<EntityStore> worldStore = entityStore.getStore();
+                Vector3d position = new Vector3d(x, y, z);
+                Vector3f rotation = new Vector3f(0f, 0f, 0f);
+                NPCPlugin.get().spawnNPC(worldStore, npcType, null, position, rotation);
+                System.out.println("[Event:"+eventId+"] Spawned NPC: " + npcType + " at (" + x + "," + y + "," + z + ")");
+            } catch (Exception e) {
+                System.err.println("[Event:"+eventId+"] Error spawning NPC '" + npcType + "'");
+                e.printStackTrace();
+            }
         });
-        System.out.println("[Event:"+eventId+"] Spawning NPC: " + npcType + " at (" + x + "," + y + "," + z + ")");
     }
     
+    /**
+     * Returns a player in the world as a CommandSender so AbstractWorldCommand routes to the
+     * correct world. Falls back to ConsoleSender if no players are present (e.g. during tests).
+     */
+    private CommandSender getPlayerSenderOrConsole(World world) {
+        List<Player> players = world.getPlayers();
+        if (players != null && !players.isEmpty()) {
+            return players.get(0);
+        }
+        return ConsoleSender.INSTANCE;
+    }
+
     /**
      * Unlock an interaction for a block type.
      * Expected format: { "blockType": "lever_wall" }
@@ -302,44 +349,45 @@ public class DefaultEvent extends Event {
      * Set the state of a block at specific coordinates.
      * Expected format: { "x": 100, "y": 64, "z": 200, "state": "OpenDoorIn" }
      */
-    private void handleSetBlockState(JsonObject data) {
+    private void handleSetBlockState(JsonObject data, World world) {
         if (data == null || !data.has("x") || !data.has("y") || !data.has("z") || !data.has("state")) {
             System.err.println("[Event:"+eventId+"] SET_BLOCK_STATE action missing required fields (x, y, z, state)");
             return;
         }
         
-        int x = data.get("x").getAsInt();
-        int y = data.get("y").getAsInt();
-        int z = data.get("z").getAsInt();
-        String state = data.get("state").getAsString();
+        final int x = data.get("x").getAsInt();
+        final int y = data.get("y").getAsInt();
+        final int z = data.get("z").getAsInt();
+        final String state = data.get("state").getAsString();
         
         if (state == null || state.isEmpty()) {
             System.err.println("[Event:"+eventId+"] SET_BLOCK_STATE has null or empty state");
             return;
         }
         
-        // Execute command asynchronously
-        String command = "block setstate " + x + " " + y + " " + z + " " + state;
-        CommandExecutor.executeCommand(command).whenComplete((result, ex) -> {
-            if (ex != null) {
-                System.err.println("[Event:"+eventId+"] Error setting block state");
-                ex.printStackTrace();
-            } else {
-                System.out.println("[Event:"+eventId+"] Set block state at (" + x + "," + y + "," + z + ") to: " + state);
-                
-                // Track this door state change in EventHandler for reset functionality
-                if (eventHandler != null) {
-                    try {
-                        // Use reflection to call trackDoorState method
-                        eventHandler.getClass()
-                            .getMethod("trackDoorState", int.class, int.class, int.class, String.class)
-                            .invoke(eventHandler, x, y, z, state);
-                    } catch (Exception e) {
-                        System.err.println("[Event:"+eventId+"] Failed to track door state");
-                        e.printStackTrace();
+        // Use a player in the world as the command sender so AbstractWorldCommand routes
+        // to the correct world automatically (ConsoleSender has no world context).
+        world.execute(() -> {
+            CommandSender sender = getPlayerSenderOrConsole(world);
+            String command = "block setstate " + x + " " + y + " " + z + " " + state;
+            CommandExecutor.executeCommand(sender, command).whenComplete((result, ex) -> {
+                if (ex != null) {
+                    System.err.println("[Event:"+eventId+"] Error setting block state");
+                    ex.printStackTrace();
+                } else {
+                    System.out.println("[Event:"+eventId+"] Set block state at (" + x + "," + y + "," + z + ") to: " + state);
+                    if (eventHandler != null) {
+                        try {
+                            eventHandler.getClass()
+                                .getMethod("trackDoorState", int.class, int.class, int.class, String.class)
+                                .invoke(eventHandler, x, y, z, state);
+                        } catch (Exception e) {
+                            System.err.println("[Event:"+eventId+"] Failed to track door state");
+                            e.printStackTrace();
+                        }
                     }
                 }
-            }
+            });
         });
     }
 }

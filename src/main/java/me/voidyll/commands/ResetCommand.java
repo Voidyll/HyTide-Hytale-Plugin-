@@ -1,5 +1,10 @@
 package me.voidyll.commands;
 
+import com.hypixel.hytale.component.ArchetypeChunk;
+import com.hypixel.hytale.component.CommandBuffer;
+import com.hypixel.hytale.component.Ref;
+import com.hypixel.hytale.component.RemoveReason;
+import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
@@ -7,6 +12,8 @@ import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
+import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import com.hypixel.hytale.server.npc.entities.NPCEntity;
 import me.voidyll.utils.WorldUtil;
 import me.voidyll.data.ActivatedTriggersManager;
 import me.voidyll.data.ActiveSpawnGroupManager;
@@ -56,15 +63,8 @@ public class ResetCommand extends CommandBase {
     protected void executeSync(@NonNullDecl CommandContext context) {
         context.sendMessage(Message.raw("Resetting world..."));
 
-        try {
-            CommandExecutor.executeCommandSync("npc clean --confirm");
-            context.sendMessage(Message.raw("NPC clean complete."));
-        } catch (Exception e) {
-            context.sendMessage(Message.raw("Failed to clean NPCs: " + e.getMessage()));
-        }
-
-        // Reset door states BEFORE world.execute() to avoid threading issues
-        // CommandExecutor must run on command thread, not world thread
+        // Reset door states and block changes on the command thread (CommandExecutor must not
+        // run from inside a world.execute() callback to avoid deadlocks)
         if (eventHandler != null) {
             try {
                 eventHandler.resetDoorStates();
@@ -89,6 +89,19 @@ public class ResetCommand extends CommandBase {
 
         targetWorld.execute(() -> {
             try {
+                // Remove all NPCs directly via the entity store (safe on world thread)
+                EntityStore entityStore = targetWorld.getEntityStore();
+                Store<EntityStore> worldStore = entityStore.getStore();
+                worldStore.forEachChunk(
+                    NPCEntity.getComponentType(),
+                    (ArchetypeChunk<EntityStore> chunk, CommandBuffer<EntityStore> buffer) -> {
+                        for (int i = 0; i < chunk.size(); i++) {
+                            buffer.tryRemoveEntity(chunk.getReferenceTo(i), RemoveReason.REMOVE);
+                        }
+                    }
+                );
+                context.sendMessage(Message.raw("NPCs cleaned."));
+
                 List<Player> players = targetWorld.getPlayers();
 
                 groupManager.clear();
@@ -133,7 +146,8 @@ public class ResetCommand extends CommandBase {
                     
                     if (playerRef != null) {
                         String playerName = playerRef.getUsername();
-                        CommandExecutor.executeCommandSync("spawn " + playerName);
+                        // Use async to avoid blocking the world thread (sync would deadlock)
+                        CommandExecutor.executeCommand("spawn " + playerName);
                     }
                     
                     groupManager.setActiveGroup(playerUuid.toString(), 0);

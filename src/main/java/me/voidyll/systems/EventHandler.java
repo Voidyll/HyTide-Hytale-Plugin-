@@ -11,6 +11,8 @@ import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.tick.EntityTickingSystem;
 import com.hypixel.hytale.server.core.Message;
+import com.hypixel.hytale.server.core.command.system.CommandSender;
+import com.hypixel.hytale.server.core.console.ConsoleSender;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
@@ -84,6 +86,22 @@ public class EventHandler {
         entityStoreRegistry.registerSystem(new EventTickingSystem());
     }
     
+    // ==================== Utility ====================
+
+    /**
+     * Returns a player in the given world as a CommandSender so that AbstractWorldCommand
+     * automatically routes block commands to the correct world. Falls back to ConsoleSender.
+     */
+    private CommandSender getPlayerSenderOrConsole(World world) {
+        if (world != null) {
+            List<Player> players = world.getPlayers();
+            if (players != null && !players.isEmpty()) {
+                return players.get(0);
+            }
+        }
+        return ConsoleSender.INSTANCE;
+    }
+
     // ==================== Event Management ====================
     
     /**
@@ -253,12 +271,13 @@ public class EventHandler {
             return;
         }
         
+        CommandSender sender = getPlayerSenderOrConsole(WorldUtil.getGameWorld());
         int resetCount = 0;
         for (DoorStateData door : trackedDoorStates) {
             String oppositeState = door.getOppositeState();
             try {
                 String command = "block setstate " + door.getX() + " " + door.getY() + " " + door.getZ() + " " + oppositeState;
-                CommandExecutor.executeCommandSync(command);
+                CommandExecutor.executeCommandSync(sender, command);
                 System.out.println("[EventHandler] Reset door at (" + door.getX() + "," + door.getY() + "," + door.getZ() + ") from " + door.getState() + " to " + oppositeState);
                 resetCount++;
             } catch (Exception e) {
@@ -308,6 +327,7 @@ public class EventHandler {
             return;
         }
         
+        CommandSender sender = getPlayerSenderOrConsole(WorldUtil.getGameWorld());
         int resetCount = 0;
         for (Map.Entry<String, String> entry : trackedBlockChanges.entrySet()) {
             String[] parts = entry.getKey().split(",");
@@ -318,7 +338,7 @@ public class EventHandler {
             
             try {
                 String command = "block set " + x + " " + y + " " + z + " " + originalType;
-                CommandExecutor.executeCommandSync(command);
+                CommandExecutor.executeCommandSync(sender, command);
                 System.out.println("[EventHandler] Restored block at (" + entry.getKey() + ") to: " + originalType);
                 resetCount++;
             } catch (Exception e) {
