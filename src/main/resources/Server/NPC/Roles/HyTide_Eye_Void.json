@@ -4,7 +4,7 @@
   "Modify": {
     "Appearance": "Eye_Void",
     "DropList": "Empty",
-    "AttackSequence": "Component_Instruction_Attack_Sequence_Eye_Void",
+    "AttackSequence": "HyTide_Component_Instruction_Attack_Sequence_Eye_Void",
     "AttitudeGroup": "HyTide_PlayerEnemy",
     "MaxHealth": 160,
     "WanderRadius": 5,

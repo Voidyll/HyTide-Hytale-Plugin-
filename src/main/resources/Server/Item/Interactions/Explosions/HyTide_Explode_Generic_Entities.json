@@ -1,0 +1,7 @@
+{
+  "Type": "Explode",
+  "Parent": "HyTide_Explode_Generic",
+  "Config": {
+    "DamageBlocks": false
+  }
+}

@@ -30,8 +30,8 @@ import java.util.stream.Collectors;
  * Spawn Director System manages automated spawning of horde and special enemies.
  * 
  * Features:
- * - Horde spawning: 3-wave spawns triggered by randomized timer (1-2 min default)
- * - Special spawning: Single spawns on fixed timer (30s default)
+ * - Horde spawning: 3-wave spawns triggered by randomized timer (2-3 min default)
+ * - Special spawning: Single spawns on fixed timer (60s default)
  * - Entity cap enforcement (200 total, 4 specials by default)
  * - Timer controls via commands and API
  */
@@ -39,9 +39,9 @@ public class SpawnDirectorSystem {
     
     private static final int DEFAULT_ENTITY_CAP = 200;
     private static final int DEFAULT_SPECIAL_CAP = 4;
-    private static final int DEFAULT_HORDE_TIMER_MIN_MS = 90000; // 1.5 minute
-    private static final int DEFAULT_HORDE_TIMER_MAX_MS = 150000; // 2.5 minutes
-    private static final int DEFAULT_SPECIAL_TIMER_MS = 30000; // 30 seconds
+    private static final int DEFAULT_HORDE_TIMER_MIN_MS = 120000; // 2 minutes
+    private static final int DEFAULT_HORDE_TIMER_MAX_MS = 180000; // 3 minutes
+    private static final int DEFAULT_SPECIAL_TIMER_MS = 60000; // 60 seconds
     private static final int HORDE_WAVE_INTERVAL_MS = 30000; // 30 seconds between waves
     private static final int HORDE_WAVE_COUNT = 3;
     
