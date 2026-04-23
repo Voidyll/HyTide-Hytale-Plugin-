@@ -214,7 +214,7 @@
       "Description": "How long to back off for after performing an attack."
     },
     "BlockAbility": {
-      "Value": "HyTide_Shield_Block",
+      "Value": "Shield_Block",
       "Description": "The interaction to use for blocking when backing away. Set to empty to disable blocking."
     },
     "BlockProbability": {

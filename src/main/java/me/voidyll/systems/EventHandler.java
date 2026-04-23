@@ -481,52 +481,6 @@ public class EventHandler {
     
     private void createDefaultEventsConfig() {
         List<EventConfig> defaultEvents = new ArrayList<>();
-        
-        // Example timer-based event
-        EventConfig timerEvent = new EventConfig();
-        timerEvent.setEventId("horde_rush");
-        timerEvent.setHordeTimerMinMs(10000); // 10 seconds
-        timerEvent.setHordeTimerMaxMs(15000); // 15 seconds
-        timerEvent.setHordeWaveIntervalMs(15000); // 15 seconds between waves
-        timerEvent.setHordeWaveCount(5); // 5 waves per horde
-        timerEvent.setSpecialTimerMs(20000); // 20 seconds
-        timerEvent.setEndConditionType("timer");
-        JsonObject timerData = new JsonObject();
-        timerData.addProperty("durationMs", 180000); // 3 minutes
-        timerEvent.setEndConditionData(timerData);
-        defaultEvents.add(timerEvent);
-        
-        // Example boss fight event with entity kills
-        EventConfig bossEvent = new EventConfig();
-        bossEvent.setEventId("boss_fight");
-        bossEvent.setHordeTimerMinMs(20000); // 20 seconds
-        bossEvent.setHordeTimerMaxMs(30000); // 30 seconds
-        bossEvent.setHordeWaveIntervalMs(25000); // 25 seconds
-        bossEvent.setHordeWaveCount(3);
-        bossEvent.setSpecialTimerMs(15000); // 15 seconds
-        bossEvent.setEndConditionType("entity_killed");
-        JsonObject bossData = new JsonObject();
-        JsonObject bossEntities = new JsonObject();
-        bossEntities.addProperty("HyTide_Shadow_Knight", 2);  // Need to kill 2 Shadow Knights
-        bossData.add("entities", bossEntities);
-        bossEvent.setEndConditionData(bossData);
-        defaultEvents.add(bossEvent);
-        
-        // Example block-triggered event (triggered by interacting with block at specific coordinates)
-        EventConfig blockTriggeredEvent = new EventConfig();
-        blockTriggeredEvent.setEventId("spawner_activated");
-        blockTriggeredEvent.setHordeTimerMinMs(15000); // 15 seconds
-        blockTriggeredEvent.setHordeTimerMaxMs(25000); // 25 seconds
-        blockTriggeredEvent.setHordeWaveIntervalMs(20000); // 20 seconds
-        blockTriggeredEvent.setHordeWaveCount(4);
-        blockTriggeredEvent.setSpecialTimerMs(18000); // 18 seconds
-        blockTriggeredEvent.setTriggerBlockCoordinates(List.of(new int[]{100, 64, 200}));  // Triggered by interacting with block at these coordinates
-        blockTriggeredEvent.setEndConditionType("timer");
-        JsonObject blockData = new JsonObject();
-        blockData.addProperty("durationMs", 120000); // 2 minutes
-        blockTriggeredEvent.setEndConditionData(blockData);
-        defaultEvents.add(blockTriggeredEvent);
-        
         saveEventsConfig(defaultEvents);
         loadEventsFromConfigs(defaultEvents);
     }

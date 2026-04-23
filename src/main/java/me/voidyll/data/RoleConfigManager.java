@@ -71,8 +71,6 @@ public class RoleConfigManager {
         // Patrol roles
         List<RoleDefinition> patrolRoles = new ArrayList<>();
         patrolRoles.add(new RoleDefinition("HyTide_Spawn_Void_Pat", 999, 1));
-        patrolRoles.add(new RoleDefinition("HyTide_Trork_Warrior_Pat", 999, 1));
-        patrolRoles.add(new RoleDefinition("HyTide_Bear_Polar_Pat", 999, 1));
         patrolRoles.add(new RoleDefinition("HyTide_Skeleton_Burnt_Knight_Pat", 999, 1));
         patrolRoles.add(new RoleDefinition("HyTide_Skeleton_Frost_Knight_Pat", 999, 1));
         patrolRoles.add(new RoleDefinition("HyTide_Wraith_Pat", 999, 1));

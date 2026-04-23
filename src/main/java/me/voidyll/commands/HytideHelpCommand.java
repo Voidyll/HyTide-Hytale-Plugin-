@@ -255,10 +255,10 @@ public class HytideHelpCommand extends CommandBase {
                 context.sendMessage(Message.raw("  name - Unique zone name"));
                 context.sendMessage(Message.raw("  radius - Detection radius"));
                 context.sendMessage(Message.raw("  groupNumber - Spawn group to trigger"));
-                context.sendMessage(Message.raw("  type - horde, ambient, boss, patrol, special"));
+                context.sendMessage(Message.raw("  type - checkpoint, ambient, boss, patrol"));
                 context.sendMessage(Message.raw("  identifier - (Optional) Links to specific spawn markers with matching identifier"));
                 context.sendMessage(Message.raw(""));
-                context.sendMessage(Message.raw("Example: /create-trigger-zone hallway_entrance 15 1 horde"));
+                context.sendMessage(Message.raw("Example: /create-trigger-zone hallway_entrance 15 1 checkpoint"));
                 context.sendMessage(Message.raw("Example: /create-trigger-zone boss_chamber 10 3 boss boss_trigger"));
                 context.sendMessage(Message.raw("Example: /create-trigger-zone side_room 12 2 ambient"));
                 break;
