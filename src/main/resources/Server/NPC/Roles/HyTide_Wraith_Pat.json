@@ -16,6 +16,9 @@
       0,
       24
     ],
+    "ApplySeparation": {
+      "Compute": "ApplySeparation"
+    },
     "DropList": "Empty",
     "Appearance": "Wraith",
     "Weapons": [
@@ -23,7 +26,6 @@
     ],
     "OffHand": [],
     "FlockArray": [
-      "HyTide_Wraith_Pat"
     ],
     "Attack": "Root_NPC_Wraith_Attack",
     "AttackDistance": 3.5,
@@ -73,6 +75,10 @@
     "NameTranslationKey": {
       "Value": "server.npcRoles.Wraith.name",
       "Description": "Translation key for NPC name display"
+    },
+    "ApplySeparation": {
+      "Value": false,
+      "Description": "When set to false, NPCs wont try to avoid each other or player, it can lead to them stacking together, but can help to avoid jerky-like movemenet in enclosed space."
     }
   }
 }

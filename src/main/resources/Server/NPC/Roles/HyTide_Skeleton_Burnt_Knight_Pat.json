@@ -16,8 +16,7 @@
     },
     "FlockArray": {
       "Value": [
-        "Skeleton_Burnt_Soldier",
-        "Skeleton_Burnt_Gunner"
+
       ],
       "TypeHint": "String",
       "Description": "Array containing NPCs for this flock type."
@@ -56,7 +55,6 @@
     ],
     "DefaultOffHandSlot": 0,
     "FlockArray": [
-      "HyTide_Skeleton_Burnt_Knight_Pat"
     ],
     "FollowPatrolPath": {
       "Compute": "FollowPatrolPath"

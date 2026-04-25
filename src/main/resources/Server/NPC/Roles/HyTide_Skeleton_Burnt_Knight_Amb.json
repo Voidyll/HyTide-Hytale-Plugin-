@@ -16,14 +16,17 @@
     },
     "FlockArray": {
       "Value": [
-        "Skeleton_Burnt_Soldier",
-        "Skeleton_Burnt_Gunner"
+        "HyTide_Aggressive_Rat_Amb",
+        "HyTide_Spawn_Void_Amb",
+        "HyTide_Skeleton_Burnt_Knight_Amb",
+        "HyTide_Skeleton_Frost_Knight_Amb",
+        "HyTide_Wraith_Amb"
       ],
       "TypeHint": "String",
       "Description": "Array containing NPCs for this flock type."
     },
     "ApplySeparation": {
-      "Value": false,
+      "Value": true,
       "Description": "When set to false, NPCs wont try to avoid each other or player, it can lead to them stacking together, but can help to avoid jerky-like movemenet in enclosed space."
     },
     "NameTranslationKey": {

@@ -16,8 +16,7 @@
     },
     "FlockArray": {
       "Value": [
-        "Skeleton_Frost_Soldier",
-        "Skeleton_Frost_Ranger"
+
       ],
       "TypeHint": "String",
       "Description": "Array containing NPCs for this flock type."
@@ -52,7 +51,7 @@
       "Weapon_Sword_Frost"
     ],
     "FlockArray": [
-      "HyTide_Skeleton_Frost_Knight_Pat"
+
     ],
     "FollowPatrolPath": {
       "Compute": "FollowPatrolPath"

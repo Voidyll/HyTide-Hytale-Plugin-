@@ -23,7 +23,7 @@
       "Description": "Array containing NPCs for this flock type."
     },
     "ApplySeparation": {
-      "Value": false,
+      "Value": true,
       "Description": "When set to false, NPCs wont try to avoid each other or player, it can lead to them stacking together, but can help to avoid jerky-like movemenet in enclosed space."
     },
     "NameTranslationKey": {

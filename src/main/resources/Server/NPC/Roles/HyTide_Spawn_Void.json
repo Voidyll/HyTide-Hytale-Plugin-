@@ -18,6 +18,9 @@
       0,
       24
     ],
+    "ApplySeparation": {
+      "Compute": "ApplySeparation"
+    },
     "DefaultOffHandSlot": -1,
     "NighttimeOffhandSlot": -1,
     "Weapons": [
@@ -85,6 +88,10 @@
     "NameTranslationKey": {
       "Value": "server.npcRoles.Spawn_Void.name",
       "Description": "Translation key for NPC name display"
+    },
+    "ApplySeparation": {
+      "Value": true,
+      "Description": "When set to false, NPCs wont try to avoid each other or player, it can lead to them stacking together, but can help to avoid jerky-like movemenet in enclosed space."
     }
   }
 }
